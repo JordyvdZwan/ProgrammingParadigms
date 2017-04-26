@@ -6,11 +6,12 @@ import pp.block1.cc.dfa.Checker;
 import pp.block1.cc.dfa.MyChecker;
 import pp.block1.cc.dfa.State;
 
+import static pp.block1.cc.dfa.State.DFA_LALA;
 import static pp.block1.cc.dfa.State.ID6_DFA;
 
 /** Test class for Checker implementation. */
 public class CheckerTest {
-	private Checker myChecker = new MyChecker(); // TODO instantiate your Checker implementation
+	private Checker myChecker = new MyChecker();
 
 	private State dfa;
 
@@ -23,6 +24,12 @@ public class CheckerTest {
 		rejects("a12 456");
 		rejects("a123456");
 		rejects("123456");
+	}
+
+	@Test
+	public void testLALA() {
+		this.dfa = DFA_LALA;
+		accepts("Laaa La");
 	}
 
 

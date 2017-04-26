@@ -97,4 +97,9 @@ public class State {
 			}
 		}
 	}
+
+	static final public State DFA_LALA;
+	static {
+		DFA_LALA = new State(0, false);
+	}
 }
