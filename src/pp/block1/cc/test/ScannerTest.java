@@ -1,18 +1,18 @@
 package pp.block1.cc.test;
 
-import static pp.block1.cc.dfa.State.ID6_DFA;
-
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
-
+import pp.block1.cc.dfa.MyScanner;
 import pp.block1.cc.dfa.Scanner;
 import pp.block1.cc.dfa.State;
 
+import java.util.List;
+
+import static pp.block1.cc.dfa.State.ID6_DFA;
+
 /** Test class for Scanner implementation. */
 public class ScannerTest {
-	private Scanner myGen = null; // TODO instantiate your Scanner implementation
+	private Scanner myGen = new MyScanner();
 
 	@Test
 	public void testID6() {
