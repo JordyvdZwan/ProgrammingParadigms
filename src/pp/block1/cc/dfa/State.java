@@ -101,5 +101,38 @@ public class State {
 	static final public State DFA_LALA;
 	static {
 		DFA_LALA = new State(0, false);
+		State Lala1 = new State(1, false);
+		State Lala2 = new State(2, true);
+		State Lala3 = new State(3, true);
+		State Lala4 = new State(4, false);
+		State Lala5 = new State(5, true);
+		State Lala6 = new State(6, true);
+		State Lala7 = new State(7, false);
+		State Lala8 = new State(8, false);
+		State Lala9 = new State(9, false);
+		State Lala10 = new State(10, false);
+		State Lala11 = new State(11, true);
+
+		DFA_LALA.addNext('L', Lala1);
+		Lala1.addNext('a', Lala2);
+		Lala2.addNext(' ', Lala3);
+		Lala2.addNext('a', Lala2);
+		Lala2.addNext('L', Lala4);
+		Lala3.addNext(' ', Lala3);
+		Lala3.addNext('L', Lala4);
+		Lala4.addNext('a', Lala5);
+		Lala5.addNext('a', Lala5);
+		Lala5.addNext(' ', Lala6);
+		Lala5.addNext('L', Lala7);
+		Lala6.addNext(' ', Lala6);
+		Lala6.addNext('L', Lala7);
+		Lala7.addNext('a', Lala8);
+		Lala8.addNext('a', Lala8);
+		Lala8.addNext(' ', Lala9);
+		Lala8.addNext('L', Lala10);
+		Lala9.addNext(' ', Lala9);
+		Lala9.addNext('L', Lala10);
+		Lala10.addNext('i', Lala11);
+		Lala11.addNext(' ', Lala11);
 	}
 }
