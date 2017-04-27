@@ -29,7 +29,8 @@ public class CheckerTest {
 	@Test
 	public void testLALA() {
 		this.dfa = DFA_LALA;
-		accepts("Laaa La");
+		accepts("Laaa La  ");
+		accepts("Laaa Laaaa  Laaaa Li");
 	}
 
 

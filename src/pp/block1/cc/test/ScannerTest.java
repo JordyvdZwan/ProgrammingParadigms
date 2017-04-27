@@ -8,6 +8,7 @@ import pp.block1.cc.dfa.State;
 
 import java.util.List;
 
+import static pp.block1.cc.dfa.State.DFA_LALA;
 import static pp.block1.cc.dfa.State.ID6_DFA;
 
 /** Test class for Scanner implementation. */
@@ -20,6 +21,14 @@ public class ScannerTest {
 		yields("");
 		yields("a12345", "a12345");
 		yields("a12345AaBbCc", "a12345", "AaBbCc");
+	}
+
+	@Test
+	public void testLALA() {
+		this.dfa = DFA_LALA;
+		yields("");
+		yields("LaaaLaaaaLaaLaaLaaaLaaaLaaaLi", "LaaaLaaaa", "LaaLaa", "LaaaLaaaLaaaLi");
+		yields("La  La  La  ", "La  La  ", "La  ");
 	}
 
 	private void yields(String word, String... tokens) {
