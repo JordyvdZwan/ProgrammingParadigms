@@ -15,5 +15,6 @@ public class QuotationTest {
         tester.correct("\"test\"");
         tester.wrong("\"te\"st\"");
         tester.correct("\"te\"\"st\"");
+        tester.correct("\"te\"\"\"");
     }
 }
