@@ -28,6 +28,7 @@ public class ScannerTest {
 		this.dfa = DFA_LALA;
 		yields("");
 		yields("LaaaLaaaaLaaLaaLaaaLaaaLaaaLi", "LaaaLaaaa", "LaaLaa", "LaaaLaaaLaaaLi");
+		yields("LaaaLaaaaLaaLaaLaaaLaaaaaaLi", "LaaaLaaaa", "LaaLaa", "LaaaLaaaaaa");
 		yields("La  La  La  ", "La  La  ", "La  ");
 	}
 

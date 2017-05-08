@@ -5,6 +5,7 @@ import java.util.List;
 
 /**
  * Created by reinier on 26-4-2017.
+ * And by Jordy
  */
 public class MyScanner implements Scanner {
     @Override
@@ -45,10 +46,15 @@ public class MyScanner implements Scanner {
             if (i == text.length()) {
                 if (dfa.isAccepting())
                     lastToken = history;
-                if (lastToken != null && lastTokenEndIndex == text.length() - 1)
+                if (lastToken != null) {
                     result.add(lastToken);
-                if (lastTokenEndIndex != text.length() - 1)
-                    i = lastTokenEndIndex;
+                    if (lastTokenEndIndex != text.length() - 1) {
+                        i = lastTokenEndIndex;
+                        lastToken = null;
+                        history = "";
+                        dfa = start;
+                    }
+                }
                 continue;
             }
 
