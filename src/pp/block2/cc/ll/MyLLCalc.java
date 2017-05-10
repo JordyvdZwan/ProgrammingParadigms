@@ -21,6 +21,10 @@ public class MyLLCalc implements LLCalc {
     public Map<Symbol, Set<Term>> getFirst() {
         Map<Symbol, Set<Term>> result = new HashMap<Symbol, Set<Term>>();
 
+        for (Rule rule : grammar.getRules()) {
+            result.put(rule.getLHS(), new HashSet<Term>());
+        }
+
         boolean changing = true;
         while (changing) {
             changing = false;
@@ -59,18 +63,98 @@ public class MyLLCalc implements LLCalc {
 
     @Override
     public Map<NonTerm, Set<Term>> getFollow() {
+        Map<NonTerm, Set<Term>> result = new HashMap<NonTerm, Set<Term>>();
+        Map<Symbol, Set<Term>> first = getFirst();
 
-        return null;
+        for (Rule rule : grammar.getRules()) {
+            result.put(rule.getLHS(), new HashSet<Term>());
+        }
+        result.get(grammar.getStart()).add(Symbol.EOF);
+
+        boolean changing = true;
+        while (changing) {
+            changing = false;
+            for (Rule p : grammar.getRules()) {
+                Set<Term> trailer = new HashSet<>();
+                trailer.addAll(result.get(p.getLHS()));
+                List<Symbol> symbols = p.getRHS();
+                int i = symbols.size() - 1;
+
+                while (i >= 0) {
+                    Symbol b = symbols.get(i--);
+                    if (b instanceof NonTerm) {
+                        if (result.get(b).addAll(trailer)) changing = true;
+                        if (first.get(b) != null && first.get(b).contains(Symbol.EMPTY)) {
+                            Set<Term> temp = first.get(b);
+                            temp.remove(Symbol.EMPTY);
+                            trailer.addAll(temp);
+                        } else {
+                            Set<Term> temp = first.get(b);
+                            trailer.clear();
+                            trailer.addAll(temp);
+                        }
+                    } else {
+                        Set<Term> temp = first.get(b);
+                        if (temp != null) {
+                            trailer.clear();
+                            trailer.addAll(temp);
+                        } else {
+                            trailer.clear();
+                            trailer.add((Term) b);
+                        }
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     @Override
     public Map<Rule, Set<Term>> getFirstp() {
-        return null;
+        Map<Rule, Set<Term>> result = new HashMap<Rule, Set<Term>>();
+        Map<Symbol, Set<Term>> first = getFirst();
+        Map<NonTerm, Set<Term>> follow = getFollow();
+
+        for (Rule p : grammar.getRules()) {
+            Set<Term> fb = null;
+            if (p.getRHS().get(0) instanceof NonTerm) {
+                fb = first.get(p.getRHS().get(0));
+            } else {
+                fb = new HashSet<Term>();
+                fb.add((Term) p.getRHS().get(0));
+            }
+            if (fb != null && fb.contains(Symbol.EMPTY)) {
+                Set<Term> temp = new HashSet<Term>();
+                temp.addAll(fb);
+                temp.addAll(follow.get(p.getLHS()));
+                result.put(p, temp);
+            } else {
+                Set<Term> temp = new HashSet<Term>();
+                if (fb != null && temp != null) {
+                    temp.addAll(fb);
+                    result.put(p, temp);
+                }
+            }
+        }
+
+        return result;
     }
 
     @Override
     public boolean isLL1() {
-        return false;
+        Map<Rule, Set<Term>> firstp = getFirstp();
+        for (NonTerm nonTerm : grammar.getNonterminals()) {
+            List<Rule> rules = grammar.getRules(nonTerm);
+            List<Symbol> nonTermList = new ArrayList<>();
+            Set<Symbol> nonTermSet = new HashSet<>();
+            for (Rule rule : rules) {
+                nonTermList.addAll(rule.getRHS());
+                nonTermSet.addAll(rule.getRHS());
+            }
+            if (nonTermList.size() != nonTermSet.size())
+                return false;
+        }
+        return true;
     }
 
 }

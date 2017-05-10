@@ -35,6 +35,52 @@ public class LLCalcTest {
 	}
 	LLCalc sentenceXLL = createCalc(sentenceXG);
 
+
+
+//	// Define the non-terminals
+//	NonTerm stat = ifG.getNonterminal ("Stat" );
+//	NonTerm elsePart = ifG.getNonterminal ("ElsePart" );
+//	// Define the terminals (take from the right lexer grammar!)
+//	Term ifT = ifG.getTerminal( If.IF );
+
+
+
+	// (other terminals you need in the tests)
+	Grammar ifG = Grammars.makeCC1(); // to be defined (Ex. 2-CC.4.1)
+	LLCalc CC1LL = createCalc ( ifG );
+
+	Grammar ifF = Grammars.makeCC2(); // to be defined (Ex. 2-CC.4.1)
+	LLCalc CC2LL = createCalc ( ifF );
+//	@Test
+//	public void testIfFirst () {
+//		Map<Symbol, Set<Term>> first = ifLL.getFirst();
+//		assertEquals (/* see 2-CC.1 */, first.get(stat));
+//		// (insert other tests)
+//	}
+//	@Test
+//	public void testIfFollow () {
+//		Map<NonTerm , Set<Term>> follow = ifLL.getFollow ();
+//		assertEquals (/* see 2-CC.1 */, follow.get(stat));
+//		// (insert other tests)
+//	}
+//	@Test
+//	public void testIfFirstPlus () {
+//		Map<Rule, Set<Term>> firstp = ifLL.getFirstp();
+//		List<Rule> elseRules = ifG.getRules(elsePart);
+//		assertEquals (/* see 2-CC.1 */, firstp.get(elseRules.get(0)));
+//		// (insert other tests)
+//	}
+	@Test
+	public void testCC1LL () {
+		assertTrue ( CC1LL.isLL1());
+	}
+
+	@Test
+	public void testCC2LL () {
+		assertTrue ( CC2LL.isLL1());
+	}
+
+
 	/** Tests the LL-calculator for the Sentence grammar. */
 	@Test
 	public void testSentenceOrigLL1() {
@@ -55,6 +101,7 @@ public class LLCalcTest {
 	public void testSentenceXFollow() {
 		// FOLLOW sets
 		Map<NonTerm, Set<Term>> follow = sentenceXLL.getFollow();
+		System.out.println(follow);
 		assertEquals(set(Symbol.EOF), follow.get(sent));
 		assertEquals(set(verb), follow.get(subj));
 		assertEquals(set(end), follow.get(obj));
@@ -73,6 +120,18 @@ public class LLCalcTest {
 	@Test
 	public void testSentenceXLL1() {
 		assertFalse(sentenceXLL.isLL1());
+	}
+
+	@Test
+	public void testCC1() {
+		// Without the last (recursive) rule, the grammar is LL-1
+		assertTrue(createCalc(sentenceG).isLL1());
+	}
+
+	@Test
+	public void testCC2() {
+		// Without the last (recursive) rule, the grammar is LL-1
+		assertTrue(createCalc(sentenceG).isLL1());
 	}
 
 	/** Creates an LL1-calculator for a given grammar. */
