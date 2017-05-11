@@ -1,11 +1,9 @@
 package pp.block2.cc.antlr;
 
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Lexer;
-
-import pp.block2.cc.AST;
-import pp.block2.cc.ParseException;
-import pp.block2.cc.Parser;
-import pp.block2.cc.SymbolFactory;
+import org.antlr.v4.runtime.tree.*;
+import pp.block2.cc.*;
 import pp.block2.cc.ll.Sentence;
 
 public class SentenceConverter 
@@ -15,16 +13,65 @@ public class SentenceConverter
 	 * example usage. */
 	private final SymbolFactory fact;
 
+	private ParseTreeProperty<AST> ptp = new ParseTreeProperty<AST>();
+	private boolean change = false;
 	public SentenceConverter() {
 		this.fact = new SymbolFactory(Sentence.class);
 	}
 
 	@Override
 	public AST parse(Lexer lexer) throws ParseException {
-		return null; // TODO Fill in
+		SentenceParser parser = new SentenceParser(new CommonTokenStream(lexer));
+		ParseTree tree = parser.sentence();
+		new ParseTreeWalker().walk(this, tree);
+		System.out.println(tree.toStringTree());
+		if (change) {
+			throw new ParseException();
+		}
+		return ptp.get(tree);
 	}
-	
-	// From here on overwrite the listener methods
+
+	@Override
+	public void exitSentence(SentenceParser.SentenceContext ctx) {
+		ptp.put(ctx, new AST(new NonTerm("Sentence")));
+		for (int i = 0; i < ctx.getChildCount(); i++) {
+			ptp.get(ctx).addChild(ptp.get(ctx.getChild(i)));
+		}
+	}
+
+	@Override
+	public void exitSubject(SentenceParser.SubjectContext ctx) {
+		ptp.put(ctx, new AST(new NonTerm("Subject")));
+		for (int i = 0; i < ctx.getChildCount(); i++) {
+			ptp.get(ctx).addChild(ptp.get(ctx.getChild(i)));
+		}
+	}
+
+	@Override
+	public void exitObject(SentenceParser.ObjectContext ctx) {
+		ptp.put(ctx, new AST(new NonTerm("Object")));
+		for (int i = 0; i < ctx.getChildCount(); i++) {
+			ptp.get(ctx).addChild(ptp.get(ctx.getChild(i)));
+		}
+	}
+
+	@Override
+	public void exitModifier(SentenceParser.ModifierContext ctx) {
+		ptp.put(ctx, new AST(new NonTerm("Modifier")));
+		for (int i = 0; i < ctx.getChildCount(); i++) {
+			ptp.get(ctx).addChild(ptp.get(ctx.getChild(i)));
+		}
+	}
+
+	@Override
+	public void visitTerminal(TerminalNode node) {
+		ptp.put(node, new AST(fact.getTerminal(node.getSymbol().getType()), node.getSymbol()));
+	}
+
+	@Override public void visitErrorNode(ErrorNode node) {
+		change = true;
+	}
+
 	// Use an appropriate ParseTreeProperty to
 	// store the correspondence from nodes to ASTs
 }
