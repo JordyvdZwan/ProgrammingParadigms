@@ -29,6 +29,9 @@ public class CalculatorTest {
         check("(5-2)-10", -7);
         check("3^2^4", 43046721);
         check("(3^2)^4", 6561);
+        check("(5/2)", 2);
+        check("(5/-2)", -2);
+        check("(5/--------2)", 2);
     }
 
     private void check(String input, int expectedOutput) throws ParseException {

@@ -120,16 +120,16 @@ public class MyLLCalc implements LLCalc {
             if (p.getRHS().get(0) instanceof NonTerm) {
                 fb = first.get(p.getRHS().get(0));
             } else {
-                fb = new HashSet<Term>();
+                fb = new HashSet<>();
                 fb.add((Term) p.getRHS().get(0));
             }
             if (fb != null && fb.contains(Symbol.EMPTY)) {
-                Set<Term> temp = new HashSet<Term>();
+                Set<Term> temp = new HashSet<>();
                 temp.addAll(fb);
                 temp.addAll(follow.get(p.getLHS()));
                 result.put(p, temp);
             } else {
-                Set<Term> temp = new HashSet<Term>();
+                Set<Term> temp = new HashSet<>();
                 if (fb != null && temp != null) {
                     temp.addAll(fb);
                     result.put(p, temp);

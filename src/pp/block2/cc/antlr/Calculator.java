@@ -80,17 +80,17 @@ public class Calculator extends CC10BaseListener {
 
     @Override
     public void exitNegative(CC10Parser.NegativeContext ctx) {
-        ptp.put(ctx, ptp.get(ctx.getChild(0)).negate());
+        ptp.put(ctx, ptp.get(ctx.getChild(1)).negate());
     }
 
     @Override
     public void exitMinusExpression(CC10Parser.MinusExpressionContext ctx) {
-        ptp.put(ctx, ptp.get(ctx.getChild(0)).subtract(ptp.get(ctx.getChild(2))));
+        ptp.put(ctx, ptp.get(ctx.minus(0)).subtract(ptp.get(ctx.minus(1))));
     }
 
     @Override
     public void exitNum(CC10Parser.NumContext ctx) {
-        ptp.put(ctx, ptp.get(ctx.getChild(0)));
+        ptp.put(ctx, ptp.get(ctx.NUM()));
     }
 
     @Override
