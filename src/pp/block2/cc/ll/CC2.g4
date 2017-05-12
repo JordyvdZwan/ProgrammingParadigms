@@ -8,14 +8,10 @@ lexer grammar CC2;
 
 A : 'a';
 B : 'b';
-Ba :  'ba';
-Aba : 'aba';
-Caba : 'caba';
-Bc : 'bc';
 C : 'c';
 
 // ignore whitespace
 WS : [ \t\n\r] -> skip;
 
 // everything else is a typo
-TYPO : [a-zA-Z]+;
+TYPO : [d-zA-Z]+;

@@ -72,22 +72,18 @@ public class Grammars {
 		// Make sure you take the token constantss from the right class!
 		SymbolFactory fact = new SymbolFactory(CC2.class);
 		Term a = fact.getTerminal(CC2.A);
-		Term ba = fact.getTerminal(CC2.Ba);
-		Term aba = fact.getTerminal(CC2.Aba);
-		Term caba = fact.getTerminal(CC2.Caba);
-        Term bc = fact.getTerminal(CC2.Bc);
         Term b = fact.getTerminal(CC2.B);
         Term c = fact.getTerminal(CC2.C);
 		// Build the context free grammar
 		Grammar g = new Grammar(L);
 		g.addRule(L, R, a);
-		g.addRule(L, Q, ba);
-		g.addRule(R, aba, Rprime);
-		g.addRule(R, caba, Rprime);
-		g.addRule(Rprime, bc, Rprime);
+		g.addRule(L, Q, b, a);
+		g.addRule(R, a, b, a, Rprime);
+		g.addRule(R, c, a, b, a, Rprime);
+		g.addRule(Rprime, b, c, Rprime);
 		g.addRule(Rprime, Symbol.EMPTY);
         g.addRule(Q, b, S);
-        g.addRule(S, bc);
+        g.addRule(S, b, c);
         g.addRule(S, c);
 		return g;
 	}

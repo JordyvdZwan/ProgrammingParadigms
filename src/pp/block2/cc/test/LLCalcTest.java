@@ -35,53 +35,110 @@ public class LLCalcTest {
 	}
 	LLCalc sentenceXLL = createCalc(sentenceXG);
 
+	//----------------------------------------------------------//
+	//                            CC1                           //
+	//----------------------------------------------------------//
+	Grammar cc1 = Grammars.makeCC1();
+	LLCalc CC1LL = createCalc (cc1);
+	NonTerm stat = cc1.getNonterminal ("Stat" );
+	NonTerm elsePart = cc1.getNonterminal ("ElsePart" );
+	Term ift = cc1.getTerminal( CC1.If );
+	Term assign = cc1.getTerminal( CC1.Assign );
+	Term elest = cc1.getTerminal( CC1.Else);
 
 
-//	// Define the non-terminals
-//	NonTerm stat = ifG.getNonterminal ("Stat" );
-//	NonTerm elsePart = ifG.getNonterminal ("ElsePart" );
-//	// Define the terminals (take from the right lexer grammar!)
-//	Term ifT = ifG.getTerminal( If.IF );
+	//----------------------------------------------------------//
+	//                            CC2                           //
+	//----------------------------------------------------------//
+	Grammar cc2 = Grammars.makeCC2(); // to be defined (Ex. 2-CC.4.1)
+	LLCalc CC2LL = createCalc ( cc2 );
+	NonTerm L = cc2.getNonterminal ("L" );
+	NonTerm R = cc2.getNonterminal ("R" );
+	NonTerm Rprime = cc2.getNonterminal ("Rprime" );
+	NonTerm Q = cc2.getNonterminal ("Q" );
+	NonTerm S = cc2.getNonterminal ("S" );
 
+	Term a = cc2.getTerminal( CC2.A );
+	Term b = cc2.getTerminal( CC2.B );
+	Term c = cc2.getTerminal( CC2.C );
 
-
-	// (other terminals you need in the tests)
-	Grammar ifG = Grammars.makeCC1(); // to be defined (Ex. 2-CC.4.1)
-	LLCalc CC1LL = createCalc ( ifG );
-
-	Grammar ifF = Grammars.makeCC2(); // to be defined (Ex. 2-CC.4.1)
-	LLCalc CC2LL = createCalc ( ifF );
-//	@Test
-//	public void testIfFirst () {
-//		Map<Symbol, Set<Term>> first = ifLL.getFirst();
-//		assertEquals (/* see 2-CC.1 */, first.get(stat));
-//		// (insert other tests)
-//	}
-//	@Test
-//	public void testIfFollow () {
-//		Map<NonTerm , Set<Term>> follow = ifLL.getFollow ();
-//		assertEquals (/* see 2-CC.1 */, follow.get(stat));
-//		// (insert other tests)
-//	}
-//	@Test
-//	public void testIfFirstPlus () {
-//		Map<Rule, Set<Term>> firstp = ifLL.getFirstp();
-//		List<Rule> elseRules = ifG.getRules(elsePart);
-//		assertEquals (/* see 2-CC.1 */, firstp.get(elseRules.get(0)));
-//		// (insert other tests)
-//	}
+	//----------------------------------------------------------//
+	//                       CC1 Tests                          //
+	//----------------------------------------------------------//
 	@Test
-	public void testCC1LL () {
-		assertTrue ( CC1LL.isLL1());
+	public void testCC1First () {
+		Map<Symbol, Set<Term>> first = CC1LL.getFirst();
+		assertEquals (set(assign, ift), first.get(stat));
+	}
+	@Test
+	public void testCC1Follow () {
+		Map<NonTerm , Set<Term>> follow = CC1LL.getFollow ();
+		assertEquals (set(Symbol.EOF, elest), follow.get(stat));
+	}
+	@Test
+	public void testCC1FirstPlus () {
+		Map<Rule, Set<Term>> firstp = CC1LL.getFirstp();
+		List<Rule> elseRules = cc1.getRules(elsePart);
+		assertEquals (set(elest), firstp.get(elseRules.get(0)));
 	}
 
 	@Test
+	public void testCC1LL () {
+		System.out.println(CC1LL.getFirstp());
+		assertFalse ( CC1LL.isLL1());
+	}
+
+	//----------------------------------------------------------//
+	//                       CC2 Tests                          //
+	//----------------------------------------------------------//
+	@Test
+	public void testCC2First () {
+		Map<Symbol, Set<Term>> first = CC2LL.getFirst();
+		assertEquals (set(a, b, c), first.get(L));
+		assertEquals (set(a, c), first.get(R));
+		assertEquals (set(b), first.get(Rprime));
+		assertEquals (set(b), first.get(Q));
+		assertEquals (set(b, c), first.get(S));
+	}
+	@Test
+	public void testCC2Follow () {
+		Map<NonTerm , Set<Term>> follow = CC2LL.getFollow ();
+		assertEquals (set(Symbol.EOF), follow.get(L));
+		assertEquals (set(a), follow.get(R));
+		assertEquals (set(a), follow.get(Rprime));
+		assertEquals (set(b), follow.get(Q));
+		assertEquals (set(b), follow.get(S));
+	}
+	@Test
+	public void testCC2FirstPlus () {
+		Map<Rule, Set<Term>> firstp = CC2LL.getFirstp();
+		List<Rule> LRules = cc2.getRules(L);
+		List<Rule> RRules = cc2.getRules(R);
+		List<Rule> RprimeRules = cc2.getRules(Rprime);
+		List<Rule> QRules = cc2.getRules(Q);
+		List<Rule> SRules = cc2.getRules(S);
+		assertEquals (set(a, c), firstp.get(LRules.get(0)));
+		assertEquals (set(b), firstp.get(LRules.get(1)));
+		assertEquals (set(a), firstp.get(RRules.get(0)));
+		assertEquals (set(c), firstp.get(RRules.get(1)));
+		assertEquals (set(b), firstp.get(RprimeRules.get(0)));
+		assertEquals (set(a, Symbol.EMPTY), firstp.get(RprimeRules.get(1)));
+		assertEquals (set(b), firstp.get(QRules.get(0)));
+		assertEquals (set(b), firstp.get(SRules.get(0)));
+		assertEquals (set(c), firstp.get(SRules.get(1)));
+	}
+
+
+	@Test
 	public void testCC2LL () {
+		System.out.println(CC2LL.getFirstp());
 		assertTrue ( CC2LL.isLL1());
 	}
 
 
-	/** Tests the LL-calculator for the Sentence grammar. */
+	//----------------------------------------------------------//
+	//                       Sentence Tests                     //
+	//----------------------------------------------------------//
 	@Test
 	public void testSentenceOrigLL1() {
 		// Without the last (recursive) rule, the grammar is LL-1

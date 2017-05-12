@@ -43,7 +43,7 @@ public class MyLLCalc implements LLCalc {
                     }
                     i = 0;
                     b = symbols.get(0);
-                    while (((result.get(b) == null && b == Symbol.EMPTY) || (result.get(b) != null && result.get(b).contains(Symbol.EMPTY))) && i < symbols.size()) {
+                    while (((result.get(b) != null && b == Symbol.EMPTY) || (result.get(b) != null && result.get(b).contains(Symbol.EMPTY))) && i < symbols.size()) {
                         rhs.addAll(result.get(b));
                         rhs.remove(Symbol.EMPTY);
                         b = symbols.get(i);
@@ -148,8 +148,8 @@ public class MyLLCalc implements LLCalc {
             List<Symbol> nonTermList = new ArrayList<>();
             Set<Symbol> nonTermSet = new HashSet<>();
             for (Rule rule : rules) {
-                nonTermList.addAll(rule.getRHS());
-                nonTermSet.addAll(rule.getRHS());
+                nonTermList.addAll(firstp.get(rule));
+                nonTermSet.addAll(firstp.get(rule));
             }
             if (nonTermList.size() != nonTermSet.size())
                 return false;
