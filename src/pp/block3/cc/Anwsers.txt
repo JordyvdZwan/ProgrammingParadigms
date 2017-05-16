@@ -1,0 +1,92 @@
+--------------------------------------------------------------------------------------
+CC1:
+Operator overloading:                     Using the same operator for multiple types
+Type Inference:                           The process of determining  a type for each name and each expression in the code.
+Synthesised attribute:                    An attribute that is build up from smaller objects, which are its children.
+Inherited attribute:                      An attribute still  build up from smaller objects, but received from its parent or siblings.
+syntax-directed translation:              An compiler implementation where the source language translation is driven by the parser.
+
+--------------------------------------------------------------------------------------
+CC2:
+For your favorite programming language, write down the base types
+in its type system. What rules and constructs does the language allow
+to build aggregate types? Does it provide a mechanism for creating a
+procedure that takes a variable number of arguments, such as printf
+in the C standard I/O library?
+Explicitly compare the types in JAVA with each of the categories discussed in Section 4.2.2 (base types, compound types
+etc.).
+
+Base types
+- byte
+- short
+- int
+- long
+- float
+- double
+- boolean
+- char
+
+Constructs
+- Arrays
+- (Abstract) Class
+- Interface
+- Enum
+
+Variable # of parameters
+It does provide a procedure to take variable amounts of arguments. (At the end of the method parameter declaration)
+
+Compound types
+- (String)*
+
+
+--------------------------------------------------------------------------------------
+CC3:
+1)
+^       num     bool    str
+num     num     XXX     XXX
+bool    XXX     XXX     XXX
+str     str     XXX     XXX
+
++       num     bool    str
+num     num     XXX     XXX
+bool    XXX     bool    XXX
+str     XXX     XXX     str
+In JAVA: str + num = str = num + str
+
+=       num     bool    str
+num     bool    XXX     XXX
+bool    XXX     bool    XXX
+str     XXX     XXX     bool
+
+XXX = Illegal
+
+2)
+Num  ->  Num  ^ Num     Num  <- F^ (Num.type,  Num.type)
+     |   Num  + Num     Num  <- F+ (Num.type,  Num.type)
+Bool ->  Bool + Bool    Bool <- F+ (Bool.type, Bool.type)
+     |   Num  = Num     Bool <- F= (Num.type,  Num.type)
+     |   Bool = Bool    Bool <- F= (Bool.type, Bool.type)
+     |   Str  = Str     Bool <- F= (Str.type,  Str.type)
+Str  ->  Str  ^ Num     Str  <- F^ (Str.type,  Num.type)
+     |   Str  + Str     Str  <- F+ (Str.type,  Str.type)
+
+3)
+The attributes are synthesized as they do not receive their value from their parents but get their value from their children.
+
+--------------------------------------------------------------------------------------
+CC4
+2) (Unsure about better anwser)
+Advantages of Action based:
+Smaller to implement.
+
+Advantages of Listener based:
+Easier to implement and easier to see what is going on.
+
+3)
+Error : mutualy left recursive (no idea why...)
+
+4)
+Inherited since the nodes are comprised of their children.
+
+--------------------------------------------------------------------------------------
+CC5

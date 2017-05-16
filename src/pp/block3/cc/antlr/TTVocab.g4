@@ -1,12 +1,12 @@
-lexer grammar CalcVocab;
+lexer grammar TTVocab;
 
-TIMES  : '*';
+POWER  : '^';
 PLUS   : '+';
-MINUS  : '-';
+EQUALS : '=';
 LPAR   : '(';
 RPAR   : ')';
 
-NUMBER : [0-9]+;
+TYPE : 'NUM' | 'STR' | 'BOOL';
 
 // ignore whitespace
 WS : [ \t\n\r] -> skip;

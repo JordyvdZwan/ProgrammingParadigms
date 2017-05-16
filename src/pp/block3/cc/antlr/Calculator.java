@@ -37,6 +37,11 @@ public class Calculator extends CalcBaseListener {
 		set(ctx, val(ctx.expr(0)) + val(ctx.expr(1)));
 	}
 
+	@Override
+	public void exitNegation(CalcParser.NegationContext ctx) {
+		set(ctx, -1 * Integer.parseInt(ctx.NUMBER().getText()));
+	}
+
 	/** Sets the val attribute of a given node. */
 	private void set(ParseTree node, int val) {
 		this.vals.put(node, val);
