@@ -86,7 +86,7 @@ Easier to implement and easier to see what is going on.
 Error : mutualy left recursive (no idea why...)
 
 4)
-Inherited since the nodes are comprised of their children.
+synthesised since the nodes are comprised of their children.
 
 --------------------------------------------------------------------------------------
 CC5
