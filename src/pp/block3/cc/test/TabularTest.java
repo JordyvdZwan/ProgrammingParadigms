@@ -4,17 +4,12 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.junit.Test;
-import pp.block3.cc.symbol.DeclUseLexer;
 import pp.block3.cc.symbol.DeclUseListenerImplOurButAlsoActuallyMine;
-import pp.block3.cc.symbol.DeclUseParser;
 import pp.block3.cc.tabular.OurTabularGrammerYetStillMineLexer;
 import pp.block3.cc.tabular.OurTabularGrammerYetStillMineParser;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
 
 public class TabularTest {
 	private final ParseTreeWalker walker = new ParseTreeWalker();
@@ -40,7 +35,7 @@ public class TabularTest {
 		Lexer lexer = new OurTabularGrammerYetStillMineLexer(chars);
 		TokenStream tokens = new CommonTokenStream(lexer);
 		OurTabularGrammerYetStillMineParser parser = new OurTabularGrammerYetStillMineParser(tokens);
-		return parser.tabular();
+		return parser.table();
 	}
 
 //	private TTAttrParser.TttContext parseTTAttr(String text) {
