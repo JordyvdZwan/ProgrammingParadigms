@@ -1,6 +1,6 @@
 grammar OurTabularGrammerYetStillMine;
 
-table : BEGIN WS* row+ END;
+table : WS* BEGIN WS* row+ END;
 row : column (COLUMN  column)* ROW;
 column : ELEM?;
 
@@ -10,7 +10,7 @@ COLUMN : WS* AMPERSAND WS*;
 ROW : WS* BACKSLASH BACKSLASH WS*;
 ELEM : TEXT ((TEXT | WS)* TEXT)? ;
 TEXT : ~[ \t\n\r\\{}&^%$#_-];
-COMMENT : '%' (~[\n])+ -> skip;
+COMMENT : '%' (~[\n])+ [\n] -> skip;
 ARGS : [lcr];
 BACKSLASH : '\\';
 AMPERSAND : '&';

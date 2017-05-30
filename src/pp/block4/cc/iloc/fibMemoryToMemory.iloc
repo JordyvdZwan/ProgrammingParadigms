@@ -1,0 +1,9 @@
+start: loadI 1 => r_x
+while: cmp_LT r_one,r_n => r_cmp
+       cbr r_cmp -> body, end
+body:  add r_x,r_y => r_z
+       i2i r_y => r_x
+       i2i r_z => r_y
+       subI r_n,1 => r_n
+       jumpI -> while
+end:   out "Z: ", r_z

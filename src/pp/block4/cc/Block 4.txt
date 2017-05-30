@@ -1,0 +1,10 @@
+AST difference with parse tree
+DAG
+basic block
+CFG
+dependence graphg
+call graph
+ssa
+symbol table
+
+
