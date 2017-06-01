@@ -1,7 +1,5 @@
 grammar SimplePascal;
 
-@header{package pp.pp.block5.cc.pascal;}
-
 /** Pascal program. */
 program
     : PROGRAM ID SEMI body DOT EOF

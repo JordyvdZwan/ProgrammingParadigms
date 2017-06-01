@@ -1,14 +1,11 @@
 package pp.block5.cc.antlr;
 
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.Lexer;
-import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
-
 import pp.block5.cc.ErrorListener;
 import pp.block5.cc.ParseException;
+
+import static java.lang.Integer.parseInt;
 
 /** Prettyprints a (number, word)-sentence and sums up the numbers. */
 public class NumWordProcessor extends NumWordBaseVisitor<Integer> {
@@ -29,7 +26,7 @@ public class NumWordProcessor extends NumWordBaseVisitor<Integer> {
 		try {
 			System.out.printf("Processing '%s':%n", text);
 			int result = grouper.group(text);
-			System.out.println("Total: " + result);
+			System.out.println("  Total: " + result);
 		} catch (ParseException exc) {
 			exc.print();
 		}
@@ -56,4 +53,34 @@ public class NumWordProcessor extends NumWordBaseVisitor<Integer> {
 	// Override the visitor methods.
 	// Each visitor method should call visit(child)
 	// if and when it wants to visit that child node.
+
+	@Override
+	public Integer visitSentence(NumWordParser.SentenceContext ctx) {
+		int result = 0;
+		int childs = ctx.word().size();
+		result += visit(ctx.number(0));
+		result += visit(ctx.word(0));
+		for (int i = 1; i < childs - 1; i++) {
+			System.out.printf(", ");
+			result += visit(ctx.number(i));
+			result += visit(ctx.word(i));
+		}
+		System.out.printf(" and ");
+		result += visit(ctx.number(childs - 1));
+		result += visit(ctx.word(childs - 1));
+		return result;
+	}
+
+	@Override
+	public Integer visitNumber(NumWordParser.NumberContext ctx) {
+		int result = parseInt(ctx.NUMBER().getText());
+		System.out.printf(ctx.NUMBER().getText() + " ");
+		return result;
+	}
+
+	@Override
+	public Integer visitWord(NumWordParser.WordContext ctx) {
+		System.out.printf(ctx.WORD().getText());
+		return 0;
+	}
 }
